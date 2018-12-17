@@ -1,6 +1,8 @@
 package com.fangjia.eureka;
 
 import com.netflix.appinfo.InstanceInfo;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.cloud.netflix.eureka.server.event.*;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -14,29 +16,30 @@ import org.springframework.stereotype.Component;
 @Component
 public class EurekaStateChangeListener {
 
+    private Log log = LogFactory.getLog(EurekaStateChangeListener.class);
+
     @EventListener
     public void listen(EurekaInstanceCanceledEvent event) {
-        System.err.println(event.getServerId() + "\t" + event.getAppName() + " 服务下线");
+        log.error(event.getServerId() + "\t" + event.getAppName() + " 服务下线");
     }
 
     @EventListener
     public void listen(EurekaInstanceRegisteredEvent event) {
-        InstanceInfo instanceInfo = event.getInstanceInfo();
-        System.err.println(instanceInfo.getAppName() + "进行注册");
+        log.info(event.getInstanceInfo().getAppName() + "进行注册....");
     }
 
     @EventListener
     public void listen(EurekaInstanceRenewedEvent event) {
-        System.err.println(event.getServerId() + "\t" + event.getAppName() + " 服务进行续约");
+        log.info(event.getServerId() + "\t" + event.getAppName() + " 服务进行续约");
     }
 
     @EventListener
     public void listen(EurekaRegistryAvailableEvent event) {
-        System.err.println("注册中心 启动");
+        log.info("注册中心启动....");
     }
 
     @EventListener
     public void listen(EurekaServerStartedEvent event) {
-        System.err.println("Eureka Server 启动");
+        log.info("Eureka-Server启动....");
     }
 }
